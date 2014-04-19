@@ -195,6 +195,38 @@ koha-mirabel fullclean
 affiche ceci :
 
 ```text
+________________________________________ #89077
+01060nam a2200217   4500
+022    $a 0182-2411
+041    $a fre
+044    $a FRA
+245 12 $a L'histoire
+260    $a Paris : $b Sophia publications, $c 1978 -
+500    $a Mensuel
+901    $3 4504 $4 Intégral $a http://www.cairn.info/magazine-l-histoire.htm $b Cairn $c Restreint $d 2001-2014
+901    $3 4544 $4 Indexation $a http://doc.sciencespo-lyon.fr/Signal/index.php?r=article/search&SearchArticle[revueId]=13&SearchArticle[dateDeb]=1988&SearchArticle[dateFin]= $b Sign@l $c Libre $d 1988- $e Sélection d'articles
+901    $3 7042 $4 Sommaire $a http://www.histoire.presse.fr/boutique/parutions $b Histoire $c Libre $d 1978-
+901    $3 7043 $4 Intégral $a http://www.histoire.presse.fr/boutique/parutions $b Histoire $c Restreint $d 1978-05-
+901    $3 7333 $4 Sommaire $a http://doc.sciencespo-lyon.fr/Signal/index.php?r=numero/search&SearchNumero[revueId]=13 $b Sign@l $c Libre $d 2000-
+942    $c PER
+042    $a pcc
+362    $a n°389, 2013 - ...
+580    $a A un supplément depuis 1998: Collections de L'histoire.
+999    $c 89077 $d 89077
+
+APRÈS
+01060nam a2200217   4500
+022    $a 0182-2411
+041    $a fre
+044    $a FRA
+245 12 $a L'histoire
+260    $a Paris : $b Sophia publications, $c 1978 -
+500    $a Mensuel
+942    $c PER
+042    $a pcc
+362    $a n°389, 2013 - ...
+580    $a A un supplément depuis 1998: Collections de L'histoire.
+999    $c 89077 $d 89077
 ```
 
 ## Automatisation
@@ -293,7 +325,7 @@ EXPORT PERL5LIB=<koha_mirabel_root>/lib:$PERL5LIB
 
 Copyright 2014 by Tamil, s.a.r.l.
 
-L<http://www.tamil.fr>
+<http://www.tamil.fr>
 
 This script is free software; you can redistribute it and/or modify it under
 the same terms as Perl 5 itself.
