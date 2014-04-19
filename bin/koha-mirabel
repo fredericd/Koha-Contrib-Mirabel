@@ -18,7 +18,8 @@ GetOptions(
 my $mirabel = Koha::Contrib::Mirabel->new( verbose => $verbose, doit => $doit );
 
 for (@ARGV) {
-    $mirabel->sync() if /sync/;
-    $mirabel->clean() if /clean/;
+    $mirabel->sync()       if /sync/;
+    $mirabel->clean()      if /^clean/;
+    $mirabel->full_clean() if /^fullclean/;
 }
 
