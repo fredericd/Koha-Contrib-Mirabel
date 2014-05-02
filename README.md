@@ -1,10 +1,11 @@
 # Koha-Contrib-Mirabel
 
-Mir@bel référence une liste de plus de deux milles revues pour lesquelles des
-*services* en-ligne sont signalés. Ces *services* sont des URL donnant accès à
-des contenus de quatre types différents : texte intégral, sommaires, résumés et
-indexation. La période de publication de la revue couverte par chaque service,
-ainsi que les lacunes et les condtions d'accès sont fournies avec le service.
+[Mir@bel](http://www.reseau-mirabel.info) référence une liste de plus de deux
+milles revues pour lesquelles des *services* en-ligne sont signalés. Ces
+*services* sont des URL donnant accès à des contenus de quatre types différents
+: texte intégral, sommaires, résumés et indexation. La période de publication
+de la revue couverte par chaque service, ainsi que les lacunes et les condtions
+d'accès sont fournies avec le service.
 
 Mir@bel est géré par un réseau de **partenaires**. Ce sont les bibliothèques et
 centres de documentation qui sont autorisés à mettre à jour Mir@bel et à
@@ -28,7 +29,8 @@ koha-mirabel fullclean
 
 ## Installation
 
-Sur un serveur Koha, installez le paquet `Koha::Contrib::Mirabel` :
+Sur un serveur Koha, installez le paquet `Koha::Contrib::Mirabel`, en tant
+qu'utilisateur root :
 
 ```sh
 cpan Koha::Contrib::Mirabel
