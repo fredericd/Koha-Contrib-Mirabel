@@ -1,5 +1,9 @@
 Revision history for Perl module koha-mirabel
 
+0.0.5 2015-06-03
+
+  - Fix bug when a Koha deleted record hasn't been deleted from Mir@bel 
+
 0.0.4 2014-05-02
 
   - Fix bug install dependency to C4::Biblio

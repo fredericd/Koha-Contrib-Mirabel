@@ -80,6 +80,11 @@ sub update {
     say '_' x 40, " #$biblionumber" if $self->verbose;
 
     my $record = GetMarcBiblio($biblionumber);
+    unless ($record) {
+        say 'ERREUR: Notice présente dans Mir@bel mais supprimée du Catalogue Koha'
+            if $self->verbose;
+        return;
+    }
     $record = MARC::Moose::Record::new_from($record, 'Legacy');
     print $record->as('Text') if $self->verbose;
 
