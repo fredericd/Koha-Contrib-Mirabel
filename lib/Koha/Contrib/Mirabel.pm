@@ -10,9 +10,17 @@ use YAML qw/LoadFile Dump/;
 use XML::Simple;
 use LWP::Simple;
 use DateTime;
+use Koha::Contrib::Tamil::Koha;
 use C4::Biblio;
 use MARC::Moose::Record;
 use MARC::Moose::Field::Std;
+
+
+has koha => (
+    is => 'rw',
+    isa => 'Koha::Contrib::Tamil::Koha',
+    default => sub { Koha::Contrib::Tamil::Koha->new() },
+);
 
 
 has url => (
@@ -79,13 +87,13 @@ sub update {
 
     say '_' x 40, " #$biblionumber" if $self->verbose;
 
-    my $record = GetMarcBiblio($biblionumber);
+    my $record = $self->koha->get_biblio($biblionumber);
     unless ($record) {
         say 'ERREUR: Notice présente dans Mir@bel mais supprimée du Catalogue Koha'
             if $self->verbose;
         return;
     }
-    $record = MARC::Moose::Record::new_from($record, 'Legacy');
+    #$record = MARC::Moose::Record::new_from($record, 'Legacy');
     print $record->as('Text') if $self->verbose;
 
     # On supprime de la notice biblio les champs cibles existants
