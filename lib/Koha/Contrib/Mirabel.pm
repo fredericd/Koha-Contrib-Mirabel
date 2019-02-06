@@ -10,17 +10,10 @@ use YAML qw/LoadFile Dump/;
 use XML::Simple;
 use LWP::Simple;
 use DateTime;
-use Koha::Contrib::Tamil::Koha;
 use C4::Biblio;
 use MARC::Moose::Record;
 use MARC::Moose::Field::Std;
 
-
-has koha => (
-    is => 'rw',
-    isa => 'Koha::Contrib::Tamil::Koha',
-    default => sub { Koha::Contrib::Tamil::Koha->new() },
-);
 
 
 has url => (
@@ -73,12 +66,21 @@ sub BUILD {
     my $self = shift;
 
     my $partenaire = C4::Context->preference('MirabelPartenaire');
-    die "Il manque la preference MirabelPartenaire" unless $partenaire;
+    die "Il manque la préférence MirabelPartenaire" unless $partenaire;
     $self->partenaire($partenaire);
 
     my $tag = C4::Context->preference('MirabelTag');
-    die "Il manque la preference MirabelTag" unless $tag;
+    die "Il manque la préférence MirabelTag" unless $tag;
     $self->tag($tag);
+}
+
+
+sub get_biblio {
+    my ($self, $biblionumber) = @_;
+
+    my $record = GetMarcBiblio( { biblionumber => $biblionumber } );
+    return unless $record;
+    return MARC::Moose::Record::new_from($record, 'Legacy');
 }
 
 
@@ -87,20 +89,19 @@ sub update {
 
     say '_' x 40, " #$biblionumber" if $self->verbose;
 
-    my $record = $self->koha->get_biblio($biblionumber);
+    my $record = $self->get_biblio($biblionumber);
     unless ($record) {
         say 'ERREUR: Notice présente dans Mir@bel mais supprimée du Catalogue Koha'
             if $self->verbose;
         return;
     }
-    #$record = MARC::Moose::Record::new_from($record, 'Legacy');
     print $record->as('Text') if $self->verbose;
 
     # On supprime de la notice biblio les champs cibles existants
     $record->delete( $self->tag );
 
     for my $service (@$services) {
-        say "Mirabel #", $service->{id}, "\n",
+        say "Mir\@bel #", $service->{id}, "\n",
             join("\n",
                  map { "  $_: " . $service->{$_} } grep { $_ ne 'id' }
                     keys %$service )
@@ -171,8 +172,8 @@ sub all_bibs {
     my $tag = shift->tag;
     my $query =
         "SELECT biblionumber " .
-        "FROM   biblioitems " .
-        "WHERE  ExtractValue(marcxml,'//datafield[\@tag=$tag]/subfield[\@code]')";
+        "FROM   biblio_metadata " .
+        "WHERE  ExtractValue(metadata,'//datafield[\@tag=$tag]/subfield[\@code]')";
     my $st = C4::Context->dbh->prepare($query);
     $st->execute;
     my @bibs;
@@ -260,8 +261,7 @@ sub full_clean {
     }
 
     for my $biblionumber (@{$self->all_bibs}) {
-        my $record = GetMarcBiblio($biblionumber);
-        $record = MARC::Moose::Record::new_from($record, 'Legacy');
+        my $record = $self->get_biblio($biblionumber);
         next unless $record->field($self->tag); # Impossible normalement...
         say '_' x 40, " #$biblionumber";
         print $record->as('Text') if $self->verbose;
