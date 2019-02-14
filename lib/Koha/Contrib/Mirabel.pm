@@ -19,7 +19,7 @@ use MARC::Moose::Field::Std;
 has url => (
     is => 'rw',
     isa => 'Str',
-    default => 'http://www.reseau-mirabel.info/site/service?',
+    default => 'https://reseau-mirabel.info/site/service?',
 );
 
 
@@ -35,8 +35,8 @@ has partenaire => ( is => 'rw', isa => 'Int' );
 
 =attr tag
 
-Le tag du champ des notices biblio où se trouvent les infor Mir@bel. Récupéré
-dans la préférence MirabelTag de l'instance courtante de Koha.
+Le tag du champ des notices biblio où se trouvent les info Mir@bel. Récupéré
+dans la préférence MirabelTag de l'instance courante de Koha.
 
 =cut
 
@@ -55,7 +55,8 @@ has verbose => ( is => 'rw', isa => 'Bool', default => 1 );
 
 =attr doit
 
-Effecture réellement les traitements de mise à jour du Catalogue Koha. Par défaut NON.
+Effectue réellement les traitements de mise à jour du Catalogue Koha. Par
+défaut NON.
 
 =cut
 
@@ -149,7 +150,12 @@ sub sync {
         say "** TEST **" unless $self->doit;
     }
 
-    my $doc = get($self->url . 'partenaire=' . $self->partenaire);
+    my $url = $self->url . 'partenaire=' . $self->partenaire;
+    my $doc = get($url);
+    unless ($doc) {
+        say "Le service web ne répond pas : $url";
+        exit;
+    }
     my $xml = XML::Simple->new(
         keyattr => [], SuppressEmpty => 1,
         ForceArray => [ 'revue', 'service' ], );
