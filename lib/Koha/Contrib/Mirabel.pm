@@ -218,7 +218,7 @@ sub clean {
     my $found = 0;
     my $tag = $self->tag;
     for my $biblionumber (@{$self->all_bibs}) {
-        my $record = GetMarcBiblio($biblionumber);
+        my $record = GetMarcBiblio( { biblionumber => $biblionumber } );
         $record = MARC::Moose::Record::new_from($record, 'Legacy');
         my $has_id = 0;
         for my $field ( $record->field($tag) ) {
